@@ -46,7 +46,10 @@ fuzz_target!(|data: &[u8]| {
         return;
     };
 
-    for batch in &mut reader {
+    // Cap per-input iterations: a malformed CSV that yields many tiny
+    // batches can otherwise blow past libFuzzer's per-input timeout
+    // before any new edge is discovered.
+    for batch in (&mut reader).take(1024) {
         let _ = batch;
     }
 });

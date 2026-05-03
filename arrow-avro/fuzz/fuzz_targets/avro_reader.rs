@@ -36,7 +36,10 @@ fuzz_target!(|data: &[u8]| {
         return;
     };
 
-    for batch in &mut reader {
+    // Cap per-input iterations: an Avro container header that lies about
+    // its block count can otherwise drive the Reader::next loop past the
+    // libFuzzer per-input timeout without any new branch coverage.
+    for batch in (&mut reader).take(1024) {
         let _ = batch;
     }
 });

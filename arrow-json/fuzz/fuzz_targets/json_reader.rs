@@ -47,7 +47,9 @@ fuzz_target!(|data: &[u8]| {
         return;
     };
 
-    for batch in &mut reader {
+    // Cap per-input iterations so a malformed JSON that yields many
+    // tiny batches doesn't blow past libFuzzer's per-input timeout.
+    for batch in (&mut reader).take(1024) {
         let _ = batch;
     }
 });
