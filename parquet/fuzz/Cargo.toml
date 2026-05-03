@@ -41,3 +41,10 @@ path = "fuzz_targets/arrow_reader.rs"
 test = false
 doc = false
 bench = false
+
+[[bin]]
+name = "thrift_decode"
+path = "fuzz_targets/thrift_decode.rs"
+test = false
+doc = false
+bench = false
