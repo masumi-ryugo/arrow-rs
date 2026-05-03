@@ -1,0 +1,50 @@
+# libFuzzer dictionary for the parquet arrow_reader fuzz target.
+# Format: <name>="<hex/escaped string>" or just "<string>".
+# Reference: https://llvm.org/docs/LibFuzzer.html#dictionaries
+
+# Parquet file magic — required at start AND end of every valid parquet file.
+"PAR1"
+
+# Encrypted parquet file magic.
+"PARE"
+
+# Common thrift compact-protocol field-type tags appearing in parquet metadata.
+# Two-byte sequences keep the fuzzer's mutator from blindly searching for them.
+"\x15\x00"
+"\x15\x02"
+"\x15\x04"
+"\x18\x00"
+"\x19\x00"
+"\x1c\x00"
+
+# Common parquet schema-name tokens we observe in the standard test corpus.
+"schema"
+"required"
+"optional"
+"repeated"
+"INT32"
+"INT64"
+"FLOAT"
+"DOUBLE"
+"BYTE_ARRAY"
+"BOOLEAN"
+"FIXED_LEN_BYTE_ARRAY"
+
+# Compression codec tags (encoded in column metadata).
+"SNAPPY"
+"GZIP"
+"LZ4"
+"ZSTD"
+"BROTLI"
+"LZ4_RAW"
+
+# Logical / converted types frequently appearing in real files.
+"UTF8"
+"DATE"
+"TIME_MILLIS"
+"TIMESTAMP_MILLIS"
+"TIMESTAMP_MICROS"
+"DECIMAL"
+
+# A minimal valid footer length placeholder (4-byte little-endian 0).
+footer_len="\x00\x00\x00\x00"
